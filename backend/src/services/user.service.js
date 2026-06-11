@@ -1,10 +1,10 @@
-const Uesr = require("../models/User.model")
+const User = require("../models/User.model");
 const AppError = require("../utils/AppError")
 
 
 
 const getUserProfile = async (username) => {
-  const user = await Uesr.findOne({
+  const user = await User.findOne({
     username,
   }).select("-password");
   if (!user) {
@@ -13,7 +13,27 @@ const getUserProfile = async (username) => {
     )
   }return user
 }
+const updateUserProfile = async(
+  userId,
+  updateData,
+) => {
+  const user = await User.findByIdAndUpdate(
+    userId,
+    updateData,
+    {
+      new: true,
+      runValidators:true,
+    }
+  ).select("-password")
+
+  if(!user){
+    throw new AppError(
+      "User not found",404
+    )
+  }return user
+}
 
 module.exports = {
   getUserProfile,
+  updateUserProfile,
 }
