@@ -1,4 +1,4 @@
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const User = require("../models/User.model")
 
 const registerUser = async (userData) => {
@@ -34,7 +34,25 @@ const hashedPassword = await bcrypt.hash(password, 10);
   return user;
 };
 
+const loginUser = async (email, password) => {
+  const user = await User.findOne({ email });
+
+  if(!user){
+    throw new Error("Invalid email or password")
+  }
+  const isPasswordCorrect = await bcrypt.compare(
+    password,
+    user.password
+  )
+  if(!isPasswordCorrect){
+    throw new Error("Invalid email or password")
+
+  }
+  return user;
+}
+
 module.exports = {
   registerUser,
+  loginUser,
 };
 
