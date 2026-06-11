@@ -14,6 +14,7 @@ app.use(morgan("dev"));
 
 app.use(express.json());
 
+const path = require("path");
 
 const authRoutes = require("./routes/auth.routes");
 app.get("/", (req, res) => {
@@ -23,8 +24,11 @@ app.get("/", (req, res) => {
   });
 });
 
+app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
 const userRouters =require("./routes/user.routes")
+app.use(express.json());
 
+app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
 app.use("/api/v1/auth", authRoutes);
 
 app.use("/api/v1/users", userRouters);

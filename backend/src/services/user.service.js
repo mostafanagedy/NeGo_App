@@ -32,8 +32,24 @@ const updateUserProfile = async(
     )
   }return user
 }
+const updateProfilePicture = async (
+  userId,
+  imagePath
+) => {
+  const user =await User.findByIdAndUpdate(
+    userId,
+    {
+      profilePicture: imagePath,
+    },
+    {new:true,}
+).select("-password")
+  if (!user) {
+    throw new AppError("User not found",404)
+  }return user
+}
 
 module.exports = {
   getUserProfile,
   updateUserProfile,
-}
+  updateProfilePicture,
+};
