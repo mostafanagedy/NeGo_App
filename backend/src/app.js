@@ -1,0 +1,25 @@
+const express = require("express");
+const cors = require("cors");
+const helmet = require("helmet");
+const morgan = require("morgan");
+
+const app = express();
+
+app.use(helmet());
+
+app.use(cors());
+
+app.use(morgan("dev"));
+
+app.use(express.json());
+
+const authRoutes = require("./routes/auth.routes");
+app.get("/", (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: "NeGo_App API Running",
+  });
+});
+app.use("/api/v1/auth", authRoutes);
+
+module.exports = app;
