@@ -4,6 +4,7 @@ const helmet = require("helmet");
 const morgan = require("morgan");
 
 const app = express();
+const errorHandelr = require("../src/middlewares/error.middleware")
 
 app.use(helmet());
 
@@ -13,6 +14,7 @@ app.use(morgan("dev"));
 
 app.use(express.json());
 
+
 const authRoutes = require("./routes/auth.routes");
 app.get("/", (req, res) => {
   res.status(200).json({
@@ -21,5 +23,8 @@ app.get("/", (req, res) => {
   });
 });
 app.use("/api/v1/auth", authRoutes);
+
+app.use(errorHandelr);
+
 
 module.exports = app;

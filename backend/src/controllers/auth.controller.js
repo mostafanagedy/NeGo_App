@@ -1,8 +1,9 @@
 const { registerUser , loginUser} = require("../services/auth.service");
 const generateToken = require("../utils/generateToken");
+const asyncHandler  = require("../utils/asyncHandler")
+const register = asyncHandler (
+async (req, res) => {
 
-const register = async (req, res) => {
-  try {
     const user = await registerUser(req.body);
 
     const token = generateToken(user._id);
@@ -21,43 +22,43 @@ const register = async (req, res) => {
         email: user.email,
       },
     });
-  } catch (error) {
-    res.status(400).json({
-      success: false,
-      message: error.message,
-    });
   }
-};
+)
+// catch (error) {
+//     res.status(400).json({
+//       success: false,
+//       message: error.message,
+//     });
+//   }
 
-const login = async (req, res) => {
-  try {
-    const { email, password } = req.body;
+const login = asyncHandler(async (req, res) => {
+  const { email, password } = req.body;
 
-    const user = await loginUser(email, password);
+  const user = await loginUser(email, password);
 
-    const token = generateToken(user._id);
+  const token = generateToken(user._id);
 
-    return res.status(200).json({
-      success: true,
-      message: "Login successful",
+  return res.status(200).json({
+    success: true,
+    message: "Login successful",
 
-      token,
+    token,
 
-      user: {
-        id: user._id,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        username: user.username,
-        email: user.email,
-      },
-    });
-  } catch (error) {
-    return res.status(401).json({
-      success: false,
-      message: error.message,
-    });
-  }
-};
+    user: {
+      id: user._id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      username: user.username,
+      email: user.email,
+    },
+  });
+});
+// catch (error) {
+//     return res.status(401).json({
+//       success: false,
+//       message: error.message,
+//     });
+//   }
 const getMe = async (req, res) => {
   return res.status(200).json({
     success: true,
