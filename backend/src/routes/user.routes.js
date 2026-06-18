@@ -12,6 +12,7 @@ const {
   getProfile,
   updateProfile,
   uploadProfilePicture,
+  uploadCoverPicture,
 } = require("../controllers/user.controller");
 
 router.get("/profile/:username", getProfile);
@@ -23,4 +24,5 @@ router.put(
   upload.single("profilePicture"),
   uploadProfilePicture,
 );
+router.put("/cover-picture",protect,upload.single("coverPicture"),uploadCoverPicture)
 module.exports = router;

@@ -4,6 +4,7 @@ const {
   getUserProfile,
   updateUserProfile,
   updateProfilePicture,
+  updateUserImage,
 } = require("../services/user.service");
 
 const getProfile = asyncHandler(async (req, res) => {
@@ -49,8 +50,24 @@ const uploadProfilePicture = asyncHandler(async (req, res) => {
     profilePicture: user.profilePicture,
   });
 });
+const  uploadCoverPicture = asyncHandler(async (req, res) => {
+  if (!req.file) {
+    return res.status(400).json({
+      success: false,
+      message: "Please upload an image",
+    });
+  }
+  const imagPath = `/uploads/${req.file.filename}`;
+  const user = await updateUserImage(req.user._id, "coverPicture", imagPath);
+  return res.status(200).json({
+    success: true,
+    message: "Cover picture updated successfully",
+    coverPicture: user.coverPicture,
+  });
+})
 module.exports = {
   getProfile,
   updateProfile,
   uploadProfilePicture,
-};
+  uploadCoverPicture,
+}
