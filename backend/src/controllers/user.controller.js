@@ -5,7 +5,10 @@ const {
   updateUserProfile,
   updateProfilePicture,
   updateUserImage,
+  followUser,
 } = require("../services/user.service");
+const router = require("../routes/user.routes");
+const protect = require("../middlewares/auth.middleware");
 
 const getProfile = asyncHandler(async (req, res) => {
   const user = await getUserProfile(
@@ -65,9 +68,25 @@ const  uploadCoverPicture = asyncHandler(async (req, res) => {
     coverPicture: user.coverPicture,
   });
 })
+
+//follow user
+const follwUser = asyncHandler(async (req, res) => {
+  await followUser(
+    req.user._id,
+    req.params.userId
+  )
+  return res.status(200).json({
+    success: true,
+    message: "User followed successfully",
+  });
+})
+
+
+
 module.exports = {
   getProfile,
   updateProfile,
   uploadProfilePicture,
   uploadCoverPicture,
-}
+  follwUser,
+};
