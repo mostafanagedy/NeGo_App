@@ -61,9 +61,29 @@ const updateUserImage = async (
   } return user
 }
 
+const followUser = async (currentUserId, targetUserId) => {
+if (currentUserId.toString() === targetUserId.toString()) {
+  throw new AppError("You cannot follow yourself", 400);
+  }
+const currentUser = await User.findById(currentUserId);
+const targetUser = await User.findById(targetUserId);
+if (!targetUser) {
+  throw new AppError("User not found", 404);
+}
+if (currentUser.following.includes(targetUserId)) {
+  throw new AppError("You are already following this user", 400);
+}
+currentUser.following.push(targetUserId);
+targetUser.followers.push(currentUserId);
+await currentUser.save();
+await targetUser.save();
+return true;
+}
+
 module.exports = {
   getUserProfile,
   updateUserProfile,
   updateProfilePicture,
   updateUserImage,
+  followUser,
 };
