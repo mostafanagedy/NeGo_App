@@ -86,6 +86,14 @@ const userSchema = new mongoose.Schema(
         ref: "User",
       },
     ],
+
+    socialLinks: {
+      whatsapp:  { type: String, default: "" },
+      linkedin:  { type: String, default: "" },
+      github:    { type: String, default: "" },
+      twitter:   { type: String, default: "" },
+      instagram: { type: String, default: "" },
+    },
   },
   {
     timestamps: true,

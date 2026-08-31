@@ -13,10 +13,18 @@ const {
   updateProfile,
   uploadProfilePicture,
   uploadCoverPicture,
-  follwUser,
+  follow,
+  unfollow,
+  followersList,
+  followingList,
+  search,
+  getSavedPosts,
 } = require("../controllers/user.controller");
 
+router.get("/search", search);
+router.get("/saved-posts", protect, getSavedPosts);
 router.get("/profile/:username", getProfile);
+
 
 router.put("/profile", protect, validate(updateProfileSchema), updateProfile);
 router.put(
@@ -25,7 +33,22 @@ router.put(
   upload.single("profilePicture"),
   uploadProfilePicture,
 );
-router.put("/followUser/:userId", protect, follwUser);
+router.put("/cover-picture", protect, upload.single("coverPicture"), uploadCoverPicture)
 
-router.put("/cover-picture",protect,upload.single("coverPicture"),uploadCoverPicture)
+
+router.put("/follow/:userId", protect, follow);
+router.put("/unfollow/:userId", protect, unfollow);
+
+
+
+router.get("/:username/followers", followersList);
+
+router.get("/:username/following", followingList);
+
+
+
+
+
+
+
 module.exports = router;

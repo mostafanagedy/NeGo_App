@@ -1,0 +1,359 @@
+{
+  "info": {
+    "name": "NeGo API Collection",
+    "description": "Postman collection for NeGo Social Media Platform API v1",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5000/api/v1"
+    },
+    {
+      "key": "token",
+      "value": ""
+    },
+    {
+      "key": "userId",
+      "value": ""
+    },
+    {
+      "key": "username",
+      "value": ""
+    },
+    {
+      "key": "postId",
+      "value": ""
+    },
+    {
+      "key": "commentId",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Register User",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\",\n  \"username\": \"johndoe\",\n  \"email\": \"john@example.com\",\n  \"password\": \"Password123\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/auth/register", "host": ["{{baseUrl}}"], "path": ["auth", "register"] }
+          }
+        },
+        {
+          "name": "Login User",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"john@example.com\",\n  \"password\": \"Password123\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/auth/login", "host": ["{{baseUrl}}"], "path": ["auth", "login"] }
+          }
+        },
+        {
+          "name": "Get Current User",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}/auth/me", "host": ["{{baseUrl}}"], "path": ["auth", "me"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Users & Social Graph",
+      "item": [
+        {
+          "name": "Get User Profile",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/users/profile/{{username}}", "host": ["{{baseUrl}}"], "path": ["users", "profile", "{{username}}"] }
+          }
+        },
+        {
+          "name": "Update Profile",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"bio\": \"Software Engineer & Tech Enthusiast\",\n  \"location\": \"San Francisco, CA\",\n  \"website\": \"https://johndoe.dev\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/users/profile", "host": ["{{baseUrl}}"], "path": ["users", "profile"] }
+          }
+        },
+        {
+          "name": "Search Users",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/users/search?q=john", "host": ["{{baseUrl}}"], "path": ["users", "search"], "query": [{ "key": "q", "value": "john" }] }
+          }
+        },
+        {
+          "name": "Follow User",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}/users/follow/{{userId}}", "host": ["{{baseUrl}}"], "path": ["users", "follow", "{{userId}}"] }
+          }
+        },
+        {
+          "name": "Unfollow User",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}/users/unfollow/{{userId}}", "host": ["{{baseUrl}}"], "path": ["users", "unfollow", "{{userId}}"] }
+          }
+        },
+        {
+          "name": "Get User Followers",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/users/{{username}}/followers", "host": ["{{baseUrl}}"], "path": ["users", "{{username}}", "followers"] }
+          }
+        },
+        {
+          "name": "Get User Saved Posts",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}/users/saved-posts", "host": ["{{baseUrl}}"], "path": ["users", "saved-posts"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Posts",
+      "item": [
+        {
+          "name": "Create Post",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"content\": \"Hello NeGo world! #technology @johndoe\",\n  \"visibility\": \"public\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/posts", "host": ["{{baseUrl}}"], "path": ["posts"] }
+          }
+        },
+        {
+          "name": "Get Post By ID",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/posts/{{postId}}", "host": ["{{baseUrl}}"], "path": ["posts", "{{postId}}"] }
+          }
+        },
+        {
+          "name": "Get User Posts",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/posts/user/{{username}}", "host": ["{{baseUrl}}"], "path": ["posts", "user", "{{username}}"] }
+          }
+        },
+        {
+          "name": "Update Post",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"content\": \"Updated post text content #nego\",\n  \"visibility\": \"public\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/posts/{{postId}}", "host": ["{{baseUrl}}"], "path": ["posts", "{{postId}}"] }
+          }
+        },
+        {
+          "name": "Delete Post",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}/posts/{{postId}}", "host": ["{{baseUrl}}"], "path": ["posts", "{{postId}}"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Reactions",
+      "item": [
+        {
+          "name": "React to Post",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"love\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/posts/{{postId}}/react", "host": ["{{baseUrl}}"], "path": ["posts", "{{postId}}", "react"] }
+          }
+        },
+        {
+          "name": "Remove Reaction",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}/posts/{{postId}}/react", "host": ["{{baseUrl}}"], "path": ["posts", "{{postId}}", "react"] }
+          }
+        },
+        {
+          "name": "Get Post Reactions",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/posts/{{postId}}/reactions", "host": ["{{baseUrl}}"], "path": ["posts", "{{postId}}", "reactions"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Saved Posts & Sharing",
+      "item": [
+        {
+          "name": "Save Post",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}/posts/{{postId}}/save", "host": ["{{baseUrl}}"], "path": ["posts", "{{postId}}", "save"] }
+          }
+        },
+        {
+          "name": "Unsave Post",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}/posts/{{postId}}/save", "host": ["{{baseUrl}}"], "path": ["posts", "{{postId}}", "save"] }
+          }
+        },
+        {
+          "name": "Share Post",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"shareComment\": \"Check out this amazing post!\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/posts/{{postId}}/share", "host": ["{{baseUrl}}"], "path": ["posts", "{{postId}}", "share"] }
+          }
+        },
+        {
+          "name": "Get Post Shares",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/posts/{{postId}}/shares", "host": ["{{baseUrl}}"], "path": ["posts", "{{postId}}", "shares"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Comments",
+      "item": [
+        {
+          "name": "Create Comment / Reply",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"content\": \"Awesome post!\",\n  \"parentComment\": null\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/comments/{{postId}}", "host": ["{{baseUrl}}"], "path": ["comments", "{{postId}}"] }
+          }
+        },
+        {
+          "name": "Get Comments",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/comments/post/{{postId}}", "host": ["{{baseUrl}}"], "path": ["comments", "post", "{{postId}}"] }
+          }
+        },
+        {
+          "name": "Update Comment",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"content\": \"Updated comment text\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/comments/{{commentId}}", "host": ["{{baseUrl}}"], "path": ["comments", "{{commentId}}"] }
+          }
+        },
+        {
+          "name": "Delete Comment",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}/comments/{{commentId}}", "host": ["{{baseUrl}}"], "path": ["comments", "{{commentId}}"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Feed",
+      "item": [
+        {
+          "name": "Get Personalized Feed",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}/feed?page=1&limit=20", "host": ["{{baseUrl}}"], "path": ["feed"], "query": [{ "key": "page", "value": "1" }, { "key": "limit", "value": "20" }] }
+          }
+        }
+      ]
+    }
+  ]
+}
