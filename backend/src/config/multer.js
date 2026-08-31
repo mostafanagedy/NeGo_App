@@ -4,7 +4,7 @@ const fs = require("fs"); // 1. قمنا باستدعاء نظام الملفا�
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    const dir = "uploads/";
+    const dir = path.join(__dirname, "../../uploads");
 
     // 2. التحقق من وجود المجلد، وإذا لم يكن موجوداً يتم إنشاؤه تلقائياً
     if (!fs.existsSync(dir)) {
@@ -20,12 +20,14 @@ const storage = multer.diskStorage({
 });
 
 const fileFilter = (req, file, cb) => {
-  const allowedTypes = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
+  const allowedTypes = [
+    "image/jpeg", "image/jpg", "image/png", "image/webp",
+    "video/mp4", "video/webm", "video/quicktime",
+  ];
   if (allowedTypes.includes(file.mimetype)) {
     cb(null, true);
   } else {
-    // تم تصحيح الخطأ الإملائي هنا أيضاً (من fals إلى false)
-    cb(new Error("Only image files are allowed"), false);
+    cb(new Error("Only image and video files are allowed"), false);
   }
 };
 
@@ -33,8 +35,7 @@ const upload = multer({
   storage,
   fileFilter,
   limits: {
-    // ملاحظة: إذا كنت تقصد حجم الملف، يفضل استخدام fileSize وليس fieldSize
-    fileSize: 5 * 1024 * 1024,
+    fileSize: 50 * 1024 * 1024, // 50MB for videos
   },
 });
 

@@ -20,6 +20,9 @@ async (req, res) => {
         lastName: user.lastName,
         username: user.username,
         email: user.email,
+        profilePicture: user.profilePicture,
+        coverPicture: user.coverPicture,
+        bio: user.bio,
       },
     });
   }
@@ -50,6 +53,9 @@ const login = asyncHandler(async (req, res) => {
       lastName: user.lastName,
       username: user.username,
       email: user.email,
+      profilePicture: user.profilePicture,
+      coverPicture: user.coverPicture,
+      bio: user.bio,
     },
   });
 });
