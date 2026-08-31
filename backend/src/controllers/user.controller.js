@@ -11,6 +11,8 @@ const {
   getFollowing,
   searchUsers,
 } = require("../services/user.service");
+const router = require("../routes/user.routes");
+const protect = require("../middlewares/auth.middleware");
 
 const getProfile = asyncHandler(async (req, res) => {
   const user = await getUserProfile(
